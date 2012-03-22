@@ -24,7 +24,7 @@ class Hacker:
         self.reviews = [ ]
         self.tested = [ ]
         self.reports = [ ]
-        self.testcred = self.repcred = 0
+        self.testcred = self.repcred = self.mrcred = self.bugfixcred = 0
 
     def addemail (self, email, elist):
         self.email.append (email)
@@ -61,6 +61,10 @@ class Hacker:
         self.repcred += 1
     def testcredit (self, patch):
         self.testcred += 1
+    def mergerequestcredit(self, patch):
+        self.mrcred += 1
+    def bugfixcredit(self, patch):
+        self.bugfixcred += 1
 
 HackersByName = { }
 HackersByEmail = { }
@@ -124,6 +128,7 @@ class Employer:
         self.name = name
         self.added = self.removed = self.count = self.changed = 0
         self.sobs = 0
+        self.bugfixes = 0
         self.hackers = [ ]
 
     def AddCSet (self, patch):
@@ -136,6 +141,9 @@ class Employer:
 
     def AddSOB (self):
         self.sobs += 1
+
+    def AddBugFix(self):
+        self.bugfixes += 1
 
 Employers = { }
 
@@ -278,7 +286,7 @@ def MapToEmployer (email, unknown = 0):
         except KeyError:
             pass
     if unknown:
-        return [(nextyear, GetEmployer ('(Unknown)'))]
+        return [(nextyear, GetEmployer ('(Other)'))]
     return [(nextyear, GetEmployer (email))]
 
 

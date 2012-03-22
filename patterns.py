@@ -49,3 +49,7 @@ patterns = {
     # Detect errors on svn conversions
     'svn-tag': re.compile("^svn path=/tags/(.*)/?; revision=([0-9]+)$"),
 }
+# TODO: old options
+Pcommitter = re.compile (r'^Commit:' + _pemail + '$')
+Pmergerequest = re.compile(r'^\s+Merge-request:.*$')
+Ptaskfix = re.compile(r'^\s+Task-number:.*$')

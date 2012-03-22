@@ -286,6 +286,45 @@ def ReportByRepCreds (hlist):
 
 
 
+# Merge request reporting
+def CompareMRCred (h1, h2):
+    return h2.mrcred - h1.mrcred
+
+def ReportByMRs (hlist):
+    hlist.sort (CompareMRCred)
+    totalreps = 0
+    for h in hlist:
+        totalreps += h.mrcred
+    count = 0
+    BeginReport ('Developers who merged the most contributions (total %d)' % totalreps)
+    for h in hlist:
+        if h.mrcred > 0:
+            ReportLine (h.name, h.mrcred, (h.mrcred*100.0)/totalreps)
+        count += 1
+        if count >= ListCount:
+            break
+    EndReport ()
+
+# Bugfix request reporting
+def CompareBugfixCred (h1, h2):
+    return h2.bugfixcred - h1.bugfixcred
+
+def ReportByBugs (hlist):
+    hlist.sort (CompareBugfixCred)
+    totalreps = 0
+    for h in hlist:
+        totalreps += h.bugfixcred
+    count = 0
+    BeginReport ('Developers who fixed the most bugs (total %d)' % totalreps)
+    for h in hlist:
+        if h.bugfixcred > 0:
+            ReportLine (h.name, h.bugfixcred, (h.bugfixcred*100.0)/totalreps)
+        count += 1
+        if count >= ListCount:
+            break
+    EndReport ()
+
+
 def CompareESOBs (e1, e2):
     return e2.sobs - e1.sobs
 
@@ -303,6 +342,25 @@ def ReportByESOBs (elist):
         if count >= ListCount:
             break
     EndReport ()
+
+def CompareEBugfixes (e1, e2):
+    return e2.bugfixes - e1.bugfixes
+
+def ReportByEBugfixes (elist):
+    elist.sort (CompareEBugfixes)
+    totalsobs = 0
+    for e in elist:
+        totalsobs += e.bugfixes
+    count = 0
+    BeginReport ('Employers with the most bugfixes (total %d)' % totalsobs)
+    for e in elist:
+        if e.bugfixes > 0:
+            ReportLine (e.name, e.bugfixes, (e.bugfixes*100.0)/totalsobs)
+        count += 1
+        if count >= ListCount:
+            break
+    EndReport ()
+
    
 def CompareHackers (e1, e2):
     return len (e2.hackers) - len (e1.hackers)
@@ -328,17 +386,20 @@ def DevReports (hlist, totalchanged, cscount, totalremoved):
     ReportByPCount (hlist, cscount)
     ReportByLChanged (hlist, totalchanged)
     ReportByLRemoved (hlist, totalremoved)
-    ReportBySOBs (hlist)
+#    ReportBySOBs (hlist)
     ReportByRevs (hlist)
-    ReportByTests (hlist)
-    ReportByTestCreds (hlist)
-    ReportByReports (hlist)
-    ReportByRepCreds (hlist)
+#    ReportByTests (hlist)
+#    ReportByTestCreds (hlist)
+#    ReportByReports (hlist)
+    ReportByMRs(hlist)
+    ReportByBugs(hlist)
+#    ReportByRepCreds (hlist)
 
 def EmplReports (elist, totalchanged, cscount):
     ReportByPCEmpl (elist, cscount)
     ReportByELChanged (elist, totalchanged)
-    ReportByESOBs (elist)
+#    ReportByESOBs (elist)
+    ReportByEBugfixes(elist)
     ReportByEHackers (elist)
 
 def ReportByFileType (hacker_list):

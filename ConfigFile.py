@@ -165,7 +165,7 @@ def ReadFileType (filename):
 
 def ConfigFile (name, confdir):
     try:
-        file = open (name, 'r')
+        file = open (os.path.join(confdir, name), 'r')
     except IOError:
         croak ('Unable to open config file %s' % (name))
     line = ReadConfigLine (file)
